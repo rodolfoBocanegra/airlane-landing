@@ -1,249 +1,524 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Airlane — Drone Platform</title>
-  <meta name="description" content="Airlane is a modular drone platform with live video streaming over the internet, remote control, route uploads, and user management." />
-  <meta property="og:title" content="Airlane — Drone Platform" />
-  <meta property="og:description" content="Live video streaming, remote control, route uploads, and user management." />
-  <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#0f172a" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0b1220;
-      --panel: #0f172a;
-      --muted: #94a3b8;
-      --text: #e2e8f0;
-      --brand: #22d3ee;
-      --brand-strong: #06b6d4;
-      --accent: #a78bfa;
-      --ring: rgba(34, 211, 238, .35);
-      --card: #111827aa;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 16px;
-      --radius-lg: 28px;
-      --maxw: 1180px;
-    }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1200px 800px at 80% -10%, #0ea5e980 0%, transparent 60%),
-                  radial-gradient(800px 600px at -10% 30%, #8b5cf680 0%, transparent 55%),
-                  var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      letter-spacing: 0.2px;
-    }
-    a { color: inherit; text-decoration: none; }
-    .container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
-    header {
-      position: sticky; top: 0; z-index: 40;
-      background: linear-gradient(to bottom, rgba(11,18,32,.9), rgba(11,18,32,.6));
-      backdrop-filter: saturate(140%) blur(8px);
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-    .nav {
-      display: flex; align-items: center; justify-content: space-between;
-      height: 72px;
-    }
-    .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .3px; }
-    .logo-mark { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--brand), var(--accent)); box-shadow: 0 8px 20px rgba(167,139,250,.25); }
-    .nav a { opacity: .9; }
-    .nav-links { display: none; gap: 24px; }
-    .btn { display: inline-block; padding: 12px 18px; border-radius: 999px; font-weight: 600; border: 1px solid rgba(255,255,255,.1); transition: transform .08s ease, box-shadow .2s ease, background .2s ease; }
-    .btn-primary { background: linear-gradient(135deg, var(--brand), var(--brand-strong)); color: #0b1220; border: none; box-shadow: 0 10px 20px rgba(34,211,238,.22); }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 14px 26px rgba(34,211,238,.3); }
-    .btn-outline { background: rgba(255,255,255,.04); color: var(--text); }
-    .btn-outline:hover { background: rgba(255,255,255,.08); }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Airlane — Drone Platform</title>
+    <meta
+      name="description"
+      content="Airlane is a modular drone platform with live video streaming over the internet, remote control, route uploads, and user management."
+    />
+    <meta property="og:title" content="Airlane — Drone Platform" />
+    <meta
+      property="og:description"
+      content="Live video streaming, remote control, route uploads, and user management."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0b1220;
+        --panel: #0f172a;
+        --muted: #94a3b8;
+        --text: #e2e8f0;
+        --brand: #22d3ee;
+        --brand-strong: #06b6d4;
+        --accent: #a78bfa;
+        --ring: rgba(34, 211, 238, 0.35);
+        --card: #111827aa;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        --radius: 16px;
+        --radius-lg: 28px;
+        --maxw: 1180px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+      }
+      body {
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+          "Segoe UI Emoji";
+        background: radial-gradient(
+            1200px 800px at 80% -10%,
+            #0ea5e980 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            800px 600px at -10% 30%,
+            #8b5cf680 0%,
+            transparent 55%
+          ),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        letter-spacing: 0.2px;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .container {
+        width: 100%;
+        max-width: var(--maxw);
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: linear-gradient(
+          to bottom,
+          rgba(11, 18, 32, 0.9),
+          rgba(11, 18, 32, 0.6)
+        );
+        backdrop-filter: saturate(140%) blur(8px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+      }
+      .logo-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--brand), var(--accent));
+        box-shadow: 0 8px 20px rgba(167, 139, 250, 0.25);
+      }
+      .nav a {
+        opacity: 0.9;
+      }
+      .nav-links {
+        display: none;
+        gap: 24px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.08s ease, box-shadow 0.2s ease,
+          background 0.2s ease;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--brand), var(--brand-strong));
+        color: #0b1220;
+        border: none;
+        box-shadow: 0 10px 20px rgba(34, 211, 238, 0.22);
+      }
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 26px rgba(34, 211, 238, 0.3);
+      }
+      .btn-outline {
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+      }
+      .btn-outline:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
 
-    .hero { padding: 72px 0 40px; }
-    .hero-grid { display: grid; gap: 36px; align-items: center; grid-template-columns: 1.1fr 0.9fr; }
-    .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); padding: 8px 12px; border-radius: 999px; }
-    .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 6px var(--ring); }
-    h1 { font-size: 44px; line-height: 1.12; margin: 12px 0 12px; }
-    .sub { color: var(--muted); font-size: 18px; }
-    .cta { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
-    .card {
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow);
-    }
-    .screen { aspect-ratio: 16/10; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,.12); background: radial-gradient(800px 400px at 50% 0%, rgba(34,211,238,.12), rgba(0,0,0,.12)), #0a0f1b; overflow: hidden; }
-    .screen img { width: 100%; height: 100%; object-fit: cover; opacity: .9; filter: saturate(110%); }
+      .hero {
+        padding: 72px 0 40px;
+      }
+      .hero-grid {
+        display: grid;
+        gap: 36px;
+        align-items: center;
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 8px 12px;
+        border-radius: 999px;
+      }
+      .eyebrow .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--brand);
+        box-shadow: 0 0 0 6px var(--ring);
+      }
+      h1 {
+        font-size: 44px;
+        line-height: 1.12;
+        margin: 12px 0 12px;
+      }
+      .sub {
+        color: var(--muted);
+        font-size: 18px;
+      }
+      .cta {
+        display: flex;
+        gap: 12px;
+        margin-top: 22px;
+        flex-wrap: wrap;
+      }
+      .card {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.02)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+      }
+      .screen {
+        aspect-ratio: 16/10;
+        border-radius: var(--radius-lg);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: radial-gradient(
+            800px 400px at 50% 0%,
+            rgba(34, 211, 238, 0.12),
+            rgba(0, 0, 0, 0.12)
+          ),
+          #0a0f1b;
+        overflow: hidden;
+      }
+      .screen img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.9;
+        filter: saturate(110%);
+      }
 
-    section { padding: 72px 0; }
-    .section-title { font-size: 28px; margin: 0 0 8px; }
-    .section-sub { color: var(--muted); margin: 0 0 28px; }
+      section {
+        padding: 72px 0;
+      }
+      .section-title {
+        font-size: 28px;
+        margin: 0 0 8px;
+      }
+      .section-sub {
+        color: var(--muted);
+        margin: 0 0 28px;
+      }
 
-    .features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
-    .feature { padding: 18px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,.08); background: rgba(17,24,39,.5); }
-    .feature h3 { margin: 6px 0 6px; font-size: 18px; }
-    .kicker { font-size: 12px; letter-spacing: .5px; text-transform: uppercase; color: var(--brand); }
-    .muted { color: var(--muted); }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+      .feature {
+        padding: 18px;
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(17, 24, 39, 0.5);
+      }
+      .feature h3 {
+        margin: 6px 0 6px;
+        font-size: 18px;
+      }
+      .kicker {
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: var(--brand);
+      }
+      .muted {
+        color: var(--muted);
+      }
 
-    .steps { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; }
-    .step { padding: 22px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,.08); background: rgba(17,24,39,.55); }
-    .step .num { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--brand), var(--accent)); color: #0b1220; font-weight: 700; }
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+      .step {
+        padding: 22px;
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(17, 24, 39, 0.55);
+      }
+      .step .num {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--brand), var(--accent));
+        color: #0b1220;
+        font-weight: 700;
+      }
 
-    .techgrid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; }
-    .pill { padding: 10px 12px; border: 1px solid rgba(255,255,255,.08); border-radius: 999px; color: var(--muted); background: rgba(255,255,255,.04); text-align: center; }
+      .techgrid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .pill {
+        padding: 10px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.04);
+        text-align: center;
+      }
 
-    footer { padding: 48px 0 64px; color: var(--muted); border-top: 1px solid rgba(255,255,255,.06); background: linear-gradient(to top, rgba(11,18,32,.8), rgba(11,18,32,.3)); }
+      footer {
+        padding: 48px 0 64px;
+        color: var(--muted);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        background: linear-gradient(
+          to top,
+          rgba(11, 18, 32, 0.8),
+          rgba(11, 18, 32, 0.3)
+        );
+      }
 
-    .badges { display: flex; gap: 10px; flex-wrap: wrap; }
-    .badge { font-size: 12px; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.04); color: var(--muted); }
+      .badges {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .badge {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--muted);
+      }
 
-    @media (max-width: 960px) {
-      .hero-grid { grid-template-columns: 1fr; }
-      .features, .steps { grid-template-columns: 1fr 1fr; }
-      .techgrid { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 640px) {
-      h1 { font-size: 34px; }
-      .features, .steps { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="container nav">
-      <a class="logo" href="#">
-        <span class="logo-mark" aria-hidden="true"></span>
-        <span>Airlane</span>
-      </a>
-      <nav class="nav-links" aria-label="Primary">
-        <a href="#features">Features</a>
-        <a href="#how">How it works</a>
-      </nav>
-    </div>
-  </header>
+      @media (max-width: 960px) {
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
+        .features,
+        .steps {
+          grid-template-columns: 1fr 1fr;
+        }
+        .techgrid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 640px) {
+        h1 {
+          font-size: 34px;
+        }
+        .features,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <a class="logo" href="#">
+          <span class="logo-mark" aria-hidden="true"></span>
+          <span>Airlane</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+        </nav>
+      </div>
+    </header>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <div class="eyebrow"><span class="dot"></span> Modular Drone Platform</div>
-          <h1>Live video, remote control, route uploads, and user management — in one platform.</h1>
-          <p class="sub">Airlane helps you operate a reliable drone fleet at scale. Stream low-latency video over the internet, control vehicles in real time, upload mission routes, manage users & roles, and integrate with your tools.</p>
-          <div class="cta">
-            <a class="btn btn-primary" href="#features">See features</a>
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow">
+              <span class="dot"></span> Modular Drone Platform
+            </div>
+            <h1>
+              Live video, remote control, route uploads, and user management —
+              in one platform.
+            </h1>
+            <p class="sub">
+              Airlane helps you operate a reliable drone fleet at scale. Stream
+              low-latency video over the internet, control vehicles in real
+              time, upload mission routes, manage users & roles, and integrate
+              with your tools.
+            </p>
+            <div class="cta">
+              <a class="btn btn-primary" href="#features">See features</a>
+            </div>
+            <div class="badges" style="margin-top: 14px">
+              <span class="badge">Self-hosted or Cloud</span>
+              <span class="badge">REST & WebSocket API</span>
+              <span class="badge">Secure by default</span>
+            </div>
           </div>
-          <div class="badges" style="margin-top:14px">
-            <span class="badge">Self-hosted or Cloud</span>
-            <span class="badge">REST & WebSocket API</span>
-            <span class="badge">Secure by default</span>
+          <div class="card screen" aria-label="Illustrative screenshot">
+            <!-- <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1600&auto=format&fit=crop" alt="Dashboard with live video and telemetry" /> -->
           </div>
         </div>
-        <div class="card screen" aria-label="Illustrative screenshot">
-          <!-- <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1600&auto=format&fit=crop" alt="Dashboard with live video and telemetry" /> -->
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="features">
-      <div class="container">
-        <h2 class="section-title">Features</h2>
-        <p class="section-sub">Everything you need to run a professional drone operation.</p>
-        <div class="features">
-          <div class="feature">
-            <div class="kicker">Video</div>
-            <h3>Live streaming over the internet</h3>
-            <p class="muted">Low-latency video via WebRTC with fallback. Adaptive bitrate, server-side recording, and playback links.</p>
-          </div>
-          <div class="feature">
-            <div class="kicker">Control</div>
-            <h3>Remote control</h3>
-            <p class="muted">Real-time commands for motion, camera gimbal, and payload. Joystick & keyboard support with rate limiting.</p>
-          </div>
-          <div class="feature">
-            <div class="kicker">Routes</div>
-            <h3>Route uploads & mission planning</h3>
-            <p class="muted">Create, simulate, and upload routes. Pause, resume, geofencing & no-fly zones, and mission logs.</p>
-          </div>
-          <div class="feature">
-            <div class="kicker">Users</div>
-            <h3>User & role management</h3>
-            <p class="muted">Granular permissions: viewer, pilot, admin. SSO-ready. Audit trails for all actions.</p>
-          </div>
-          <div class="feature">
-            <div class="kicker">Fleet</div>
-            <h3>Fleet management</h3>
-            <p class="muted">Register vehicles, monitor status, battery health, GPS & telemetry. Alerts for anomalies.</p>
-          </div>
-          <div class="feature">
-            <div class="kicker">Integrations</div>
-            <h3>APIs & webhooks</h3>
-            <p class="muted">REST, WebSocket, and webhook callbacks. Export media and telemetry to your storage or analytics stack.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="how">
-      <div class="container">
-        <h2 class="section-title">How it works</h2>
-        <p class="section-sub">Connect your drone, stream video, plan routes, and go.</p>
-        <div class="steps">
-          <div class="step">
-            <div class="num">1</div>
-            <h3>Connect & register</h3>
-            <p class="muted">Install the agent on your Linux-based drone or companion computer. Register it with a secure token.</p>
-          </div>
-          <div class="step">
-            <div class="num">2</div>
-            <h3>Stream & control</h3>
-            <p class="muted">Open a live session to stream video and issue commands from anywhere with internet access.</p>
-          </div>
-          <div class="step">
-            <div class="num">3</div>
-            <h3>Plan & execute missions</h3>
-            <p class="muted">Upload routes, set waypoints, and execute missions with live telemetry and automatic logging.</p>
+      <section id="features">
+        <div class="container">
+          <h2 class="section-title">Features</h2>
+          <p class="section-sub">
+            Everything you need to run a professional drone operation.
+          </p>
+          <div class="features">
+            <div class="feature">
+              <div class="kicker">Video</div>
+              <h3>Live streaming over the internet</h3>
+              <p class="muted">
+                Low-latency video via WebRTC with fallback. Adaptive bitrate,
+                server-side recording, and playback links.
+              </p>
+            </div>
+            <div class="feature">
+              <div class="kicker">Control</div>
+              <h3>Remote control</h3>
+              <p class="muted">
+                Real-time commands for motion, camera gimbal, and payload.
+                Joystick & keyboard support with rate limiting.
+              </p>
+            </div>
+            <div class="feature">
+              <div class="kicker">Routes</div>
+              <h3>Route uploads & mission planning</h3>
+              <p class="muted">
+                Create, simulate, and upload routes. Pause, resume, geofencing &
+                no-fly zones, and mission logs.
+              </p>
+            </div>
+            <div class="feature">
+              <div class="kicker">Users</div>
+              <h3>User & role management</h3>
+              <p class="muted">
+                Granular permissions: viewer, pilot, admin. SSO-ready. Audit
+                trails for all actions.
+              </p>
+            </div>
+            <div class="feature">
+              <div class="kicker">Fleet</div>
+              <h3>Fleet management</h3>
+              <p class="muted">
+                Register vehicles, monitor status, battery health, GPS &
+                telemetry. Alerts for anomalies.
+              </p>
+            </div>
+            <div class="feature">
+              <div class="kicker">Integrations</div>
+              <h3>APIs & webhooks</h3>
+              <p class="muted">
+                REST, WebSocket, and webhook callbacks. Export media and
+                telemetry to your storage or analytics stack.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section>
-      <div class="container">
-        <h2 class="section-title">Tech highlights</h2>
-        <p class="section-sub">Built for reliability and scale.</p>
-        <div class="techgrid">
-          <div class="pill">WebRTC low-latency video</div>
-          <div class="pill">Secure WebSockets control</div>
-          <div class="pill">Role-based access control</div>
-          <div class="pill">Mission planner & logs</div>
-          <div class="pill">Cloud or on‑prem deploy</div>
-          <div class="pill">REST & Webhook APIs</div>
-          <div class="pill">Telemetry & alerts</div>
-          <div class="pill">Audit trails</div>
+      <section id="how">
+        <div class="container">
+          <h2 class="section-title">How it works</h2>
+          <p class="section-sub">
+            Connect your drone, stream video, plan routes, and go.
+          </p>
+          <div class="steps">
+            <div class="step">
+              <div class="num">1</div>
+              <h3>Connect & register</h3>
+              <p class="muted">
+                Install the agent on your Linux-based drone or companion
+                computer. Register it with a secure token.
+              </p>
+            </div>
+            <div class="step">
+              <div class="num">2</div>
+              <h3>Stream & control</h3>
+              <p class="muted">
+                Open a live session to stream video and issue commands from
+                anywhere with internet access.
+              </p>
+            </div>
+            <div class="step">
+              <div class="num">3</div>
+              <h3>Plan & execute missions</h3>
+              <p class="muted">
+                Upload routes, set waypoints, and execute missions with live
+                telemetry and automatic logging.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <h2 class="section-title">Tech highlights</h2>
+          <p class="section-sub">Built for reliability and scale.</p>
+          <div class="techgrid">
+            <div class="pill">WebRTC low-latency video</div>
+            <div class="pill">Secure WebSockets control</div>
+            <div class="pill">Role-based access control</div>
+            <div class="pill">Mission planner & logs</div>
+            <div class="pill">Cloud or on‑prem deploy</div>
+            <div class="pill">REST & Webhook APIs</div>
+            <div class="pill">Telemetry & alerts</div>
+            <div class="pill">Audit trails</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div
+        class="container"
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          flex-wrap: wrap;
+        "
+      >
+        <div style="display: flex; align-items: center; gap: 10px">
+          <span class="logo-mark" aria-hidden="true"></span>
+          <span>Airlane</span>
+          <span aria-hidden="true" style="opacity: 0.5">•</span>
+          <span>© <span id="year"></span> All rights reserved.</span>
+        </div>
+        <div style="display: flex; gap: 14px">
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
         </div>
       </div>
-    </section>
-  </main>
+    </footer>
 
-  <footer>
-    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <span class="logo-mark" aria-hidden="true"></span>
-        <span>Airlane</span>
-        <span aria-hidden="true" style="opacity:.5;">•</span>
-        <span>© <span id="year"></span> All rights reserved.</span>
-      </div>
-      <div style="display:flex; gap:14px;">
-        <a href="#features">Features</a>
-        <a href="#how">How it works</a>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>
